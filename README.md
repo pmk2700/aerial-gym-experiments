@@ -140,9 +140,9 @@ np.savez("collected_data/euler_angles.npz", euler_angles=all_euler_angles)
 
 #### Output Files
 After simulation ends, the following files are created in the `collected_data/` folder:
-- `positions.npz`: shape (T, 1, 3) — x, y, z over time
-- `orientations.npz`: shape (T, 1, 4) — quaternion
-- `euler_angles.npz`: shape (T, 1, 3) — roll, pitch, yaw (in radians)
+- `positions.npz`: shape (T, 1, 3) : x, y, z over time
+- `orientations.npz`: shape (T, 1, 4) : quaternion
+- `euler_angles.npz`: shape (T, 1, 3) : roll, pitch, yaw (in radians)
 
 These files can be loaded using NumPy and visualized using `matplotlib`.
 ![Wind Disturbance Result](path.png)
@@ -219,7 +219,7 @@ IGE_env.gym.set_actor_rigid_body_properties(
 
 ### Result
 ![Payload Attachment Result](payload.png)
-The drone's Z-position shows a small dip after the mass increase, followed by correction via the position controller — confirming the success of this simulation.
+The drone's Z-position shows a small dip after the mass increase, followed by correction via the position controller, confirming the success of this simulation.
 
 This approach offers a realistic and reproducible way to simulate payload attachment without switching URDFs or modifying the controller logic.
 
@@ -277,5 +277,5 @@ actions[0, :] = [0.0, 0.0, 1.0, 0.0]  # hover at 1 meter
 ![Wind Disturbance Result](wind.png)
 This method allows testing robustness of geometric controllers to external forces without changing URDFs or physics engines. It is also extensible: you can simulate time-varying wind (e.g., gusts) by making wind_force dynamic.
 ## Author
-Pranav Kulkarni — UC San Diego ERL
+Pranav Kulkarni | UC San Diego ERL
 
