@@ -145,6 +145,7 @@ After simulation ends, the following files are created in the `collected_data/` 
 - `euler_angles.npz`: shape (T, 1, 3) — roll, pitch, yaw (in radians)
 
 These files can be loaded using NumPy and visualized using `matplotlib`.
+![Wind Disturbance Result](path.png)
 
 #### Why This Script is Important
 This is the baseline setup that all other experiments build upon. If you're trying to simulate effects like mid-flight payload attachment or wind disturbances, you’ll be updating this exact file.
