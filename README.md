@@ -221,6 +221,59 @@ The drone's Z-position shows a small dip after the mass increase, followed by co
 
 This approach offers a realistic and reproducible way to simulate payload attachment without switching URDFs or modifying the controller logic.
 
+## Simulating Wind Disturbance Mid-Flight
+This section explains how to simulate an external wind disturbance acting on a quadrotor during hover. We modify the baseline position control example and inject a lateral force (e.g., in +X direction) during flight to mimic the effect of wind. This test helps evaluate how well the drone maintains its position under external perturbations.
+
+### Motivation
+Instead of modifying aerodynamic models or manually injecting new physics constraints, we simulate wind by applying a constant external force to the drone’s body using the global force tensor.
+
+This method is Simple and Effective.
+
+### Key Implementation HIghlights:
+Key Implementation Highlights
+
+   1. Wind is simulated as a persistent force vector in a chosen direction.
+
+   2. The disturbance starts after a specific timestep (wind_step) and remains active for the rest of the simulation.
+
+   3. The controller remains active, allowing us to evaluate its response to the disturbance.
+
+### Wind Disturbance Code Summary
+#### Apply wind force after a chosen timestep:
+```
+python
+wind_step = 1000
+wind_force = torch.tensor([10.0, 0.0, 0.0], device="cuda:0")  # Wind along +X axis
+```
+
+#### Get base link index to apply force:
+```
+python
+body_index = IGE_env.gym.find_actor_rigid_body_handle(env_handle, actor_handle, "base_link")
+```
+
+#### Inside the simulation loop:
+```
+python
+for i in range(2000):
+    if i == wind_step:
+        logger.warning(f"Applying wind force at step {i}")
+
+    if i >= wind_step:
+        IGE_env.global_tensor_dict["global_force_tensor"][body_index] = wind_force
+    else:
+        IGE_env.global_tensor_dict["global_force_tensor"][body_index] = torch.tensor([0.0, 0.0, 0.0], device="cuda:0")
+
+    env_manager.step(actions=actions)
+```
+
+#### Controller target (hover setpoint remains the same):
+```
+python 
+actions[0, :] = [0.0, 0.0, 1.0, 0.0]  # hover at 1 meter
+```
+
+This method allows testing robustness of geometric controllers to external forces without changing URDFs or physics engines. It is also extensible: you can simulate time-varying wind (e.g., gusts) by making wind_force dynamic.
 ## Author
 Pranav Kulkarni — UC San Diego ERL
 
