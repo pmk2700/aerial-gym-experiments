@@ -216,7 +216,8 @@ IGE_env.gym.set_actor_rigid_body_properties(
 
 ```
 
-### Observed Output
+### Result
+![Payload Attachment Result](payload.png)
 The drone's Z-position shows a small dip after the mass increase, followed by correction via the position controller — confirming the success of this simulation.
 
 This approach offers a realistic and reproducible way to simulate payload attachment without switching URDFs or modifying the controller logic.
@@ -272,7 +273,7 @@ for i in range(2000):
 python 
 actions[0, :] = [0.0, 0.0, 1.0, 0.0]  # hover at 1 meter
 ```
-
+![Wind Disturbance Result](wind.png)
 This method allows testing robustness of geometric controllers to external forces without changing URDFs or physics engines. It is also extensible: you can simulate time-varying wind (e.g., gusts) by making wind_force dynamic.
 ## Author
 Pranav Kulkarni — UC San Diego ERL
